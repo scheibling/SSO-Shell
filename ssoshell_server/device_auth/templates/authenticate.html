@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('SSH Key Authentication') }}</a></h1>
+{% endblock %}
+
+
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}">
+{{ form.media }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+
+{% block breadcrumbs %}{% endblock %}
+
+
+{% block content %}
+
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p class="errornote">
+    {{ error }}
+</p>
+{% endfor %}
+{% endif %}
+
+<div id="content-main">
+    <div class="submit-row">
+        <a href="{{ request.scheme }}://{{ request.get_host }}/device/method/oidc"><input type="button" value="OpenID Connect Login"></button></a><br />
+        {% comment %} <a href="#"><input type="button" value="SAML Login"></button></a> {% endcomment %}
+    </div>
+</div>
+{% endblock %}

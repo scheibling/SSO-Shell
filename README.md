@@ -15,15 +15,22 @@ $ source .venv/bin/activate
 ```bash
 $ pip install -r requirements.txt
 ```
-4. Run the migrations
+4. Install flask manually
+```bash
+$ pip install git+https://github.com/mitsuhiko/flask-oauth
+```
+
+5. Run the migrations
 ```bash
 $ python manage.py migrate
 ```
-5. Create a superuser
+
+6. Create a superuser
 ```bash
 $ python manage.py createsuperuser
 ```
-6. Start the app
+
+7. Start the app
 ```bash
 $ python manage.py runserver
 ```
