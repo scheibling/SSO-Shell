@@ -30,6 +30,11 @@ $ python manage.py migrate
 $ python manage.py createsuperuser
 ```
 
+7. Create a certificate
+```bash
+$ python manage.py makecacert
+```
+
 7. Start the app
 ```bash
 $ python manage.py runserver

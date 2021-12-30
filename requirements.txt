@@ -5,3 +5,4 @@ asyncssh
 openid-connect
 django_auth_oidc
 django-environ
+pexpect

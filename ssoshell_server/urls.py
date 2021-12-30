@@ -18,8 +18,9 @@ from django.urls import path, include, re_path
 
 
 urlpatterns = [
-    re_path('^', include('ssoshell_server.users.urls')),
-    path('admin/', admin.site.urls),
+    re_path('^', include('ssoshell_server.user.urls')),
+    re_path('^admin/', admin.site.urls),
     re_path(r'^auth/', include('ssoshell_server.oidc_authentication.urls')),
     re_path(r'^device/', include('ssoshell_server.device_auth.urls')),
+    re_path('^host/', include('ssoshell_server.host.urls')),
 ]

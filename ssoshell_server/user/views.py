@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 
 
+def index(request):
+    return HttpResponse(status=403, content_type="text/html", content='Forbidden')
 
 # Create your views here.
 def success(request):

@@ -42,12 +42,22 @@ AUTH_CLIENT_ID = env('OIDC_AUTH_CLIENT_ID')
 AUTH_CLIENT_SECRET = env('OIDC_AUTH_CLIENT_SECRET')
 AUTH_SCOPE = ['openid', 'WS']
 
+SSH_CA_CERT_PATH = env('SSH_CA_CERT_PATH', default='ssh_ca')
+SSH_CA_CERT_PASSWORD = env('SSH_CA_CERT_PASSWORD', default='')
+SSH_CA_ROTATION = env('SSH_CA_ROTATION', default=24)
+SSH_CA_CERT_VALIDITY = env('SSH_CA_CERT_VALIDITY', default=8)
+SSH_CA_CERT_SUBJECT_OIDC = env('SSH_CA_CERT_SUBJECT_OIDC', default='sub')
+SSH_CA_CERT_SUBJECT_SAML = env('SSH_CA_CERT_SUBJECT_SAML', default='samaccountname')
+SSH_CA_CERT_SUBJECT_BUILTIN = env('SSH_CA_CERT_SUBJECT_BUILTIN', default='username')
+
 # Application definition
 
 INSTALLED_APPS = [
-    'ssoshell_server.users',
+    'ssoshell_server.user',
     'ssoshell_server.device_auth',
     'ssoshell_server.oidc_authentication',
+    'ssoshell_server.ssh_ca',
+    'ssoshell_server.host',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
