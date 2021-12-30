@@ -17,6 +17,7 @@ def init(request):
     
     # Get POST JSON body
     body = request.body.decode('utf-8')
+    print(body)
     
     # Generate random string
     token = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
@@ -72,7 +73,8 @@ def retn(request):
     if (request.session.get('method') == 'saml'):
         subject = request.session.get('saml', {}).get(settings.SSH_CA_CERT_SUBJECT_SAML)
      
-    principals = ",".join(x.name for x in request.user.groups.all())
+    # principals = ",".join(x.name for x in request.user.groups.all() if " " not in x.name)
+    principals = "none,nobody"
     
     # try:
     auth_completed = AuthCompleted(
@@ -85,11 +87,14 @@ def retn(request):
     auth_completed.save()       
     
     auth_completed = AuthCompleted.objects.get(token=auth_request.token)
+    
     # Sign the key
     signed = sign_key(auth_request.public_key, subject, principals, auth_completed.serial)
     
     auth_completed.signed_key = signed
     auth_completed.save()
+    
+    request.session.flush()
     
     return HttpResponse(status=200, content_type='text/html', content="You have now successfully authenticated. You can close this window and go back to your SSH Shell.")
 

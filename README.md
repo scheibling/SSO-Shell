@@ -1,6 +1,8 @@
 # SSO-Shell
 SSH Extension software for Single Sign-on with SSH Certificates
 
+# Documentation
+[Click here for documentation](https://scheibling.github.io/sso-shell)
 
 # Installation
 1. Create a new virtual environment:

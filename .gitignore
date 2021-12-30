@@ -129,3 +129,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.pub
+ssh_ca
+ssh_ca.pub

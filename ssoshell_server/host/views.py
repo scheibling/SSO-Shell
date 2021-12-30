@@ -35,4 +35,4 @@ def get_principals(request, servername):
     for item in hostgroups:
         principals.append(item.group.group_slug)
         
-    return HttpResponse(status=200, content_type='text/plain', content=",".join(principals))
+    return HttpResponse(status=200, content_type='text/plain', content="\n".join(principals))

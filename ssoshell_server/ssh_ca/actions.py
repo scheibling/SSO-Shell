@@ -7,10 +7,11 @@ def sign_key(key_data, user_id, principals, serial):
     Sign a key using the SSH CA.
     """
     # Write cert to file with a random filename
-    temp_file = 'id_ecdsa%d.pub' % serial  
+    temp_file = os.path.join('/tmp', 'id_ecdsa%d.pub' % serial)
     
     with open(temp_file, 'w') as f:
-        f.write(key_data)
+        print(key_data)
+        f.write(key_data.strip('"'))
             
     ssh_ca_path = settings.SSH_CA_CERT_PATH
     password = ''
@@ -18,7 +19,7 @@ def sign_key(key_data, user_id, principals, serial):
         password = settings.SSH_CA_CERT_PASSWORD
         
     args = ['ssh-keygen', '-s', ssh_ca_path, '-I', user_id, '-n', principals, '-z', str(serial), '-V', f'+{str(settings.SSH_CA_CERT_VALIDITY)}h', temp_file]
-    
+    print(" ".join(args))
     proc = pexpect.spawn(" ".join(args))
     if not password == "":
         proc.expect('Enter passphrase:')
@@ -28,11 +29,12 @@ def sign_key(key_data, user_id, principals, serial):
     output = proc.read()
 
     if "Signed user key" not in output.decode():
+        print(output.decode())
         return False
         
-    with open('id_ecdsa%s-cert.pub' % serial, 'r') as f:
+    with open(os.path.join('/tmp', 'id_ecdsa%s-cert.pub' % serial), 'r') as f:
         cert = f.readline()
-    os.remove('id_ecdsa%s-cert.pub' % serial)
-    os.remove('id_ecdsa%s.pub' % serial)
+    os.remove(os.path.join('/tmp', 'id_ecdsa%s-cert.pub' % serial))
+    os.remove(os.path.join('/tmp', 'id_ecdsa%s.pub' % serial))
     
     return cert
