@@ -1,3 +1,5 @@
+![](sso-shell.png)
+
 # SSO Shell
 ## What am I?
 SSO Shell is a three-part software for managing access control and SSH Certificates for multiple hosts across your environment.
