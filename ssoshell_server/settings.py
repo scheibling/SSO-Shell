@@ -36,11 +36,12 @@ SECRET_KEY = 'django-insecure-qo445$#w+(dz&1ynacytdc1w&42xo#06yg)+-n!+am(p^43*22
 DEBUG = True
 
 ALLOWED_HOSTS = env('APP_HOSTNAME', default=['*'])
-
+# CSRF_TRUSTED_ORIGINS = "https://ca.ssosh.io"
+CSRF_TRUSTED_ORIGINS = ['https://ca.ssosh.io']
 AUTH_SERVER = env('OIDC_AUTH_SERVER')
 AUTH_CLIENT_ID = env('OIDC_AUTH_CLIENT_ID')
 AUTH_CLIENT_SECRET = env('OIDC_AUTH_CLIENT_SECRET')
-AUTH_SCOPE = ['openid', 'WS']
+AUTH_SCOPE = env('OIDC_AUTH_SCOPE', default="openid").split(",")
 
 SSH_CA_CERT_PATH = env('SSH_CA_CERT_PATH', default='ssh_ca')
 SSH_CA_CERT_PASSWORD = env('SSH_CA_CERT_PASSWORD', default='')
