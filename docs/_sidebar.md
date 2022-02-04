@@ -6,15 +6,19 @@
 
 - Installation and Configuration
   - SSO Shell Server
-    - [Bare metal](install/ssosh-bare.md)
-    - [Docker](install/ssosh-docker.md)
-    - [Kubernetes](install/ssosh-kubernetes.md)
-  - [SSO Shell Client](install/ssosh-client.md)
-  - [SSO Shell Host](install/ssosh-host.md)
+    - [Bare metal](install/server/bare.md)
+    - [Docker](install/server/docker.md)
+    - [Kubernetes](install/server/kubernetes.md)
+  - SSO Shell Host
+    - [Installation](install/host/install.md)
+    - [Ansible](install/host/ansible.md)
+  - SSO Shell Client
+    - [Installation](install/client/install.md)
+  
 
 - Usage
-  - [Permissions](usage/permissions.md)
   - [Authentication](usage/authentication.md)
+  - [Permission Control](usage/permissions.md)
   - [Logging](usage/logging.md)
 
 - Limitations
