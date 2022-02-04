@@ -1,3 +1,4 @@
+from uuid import uuid4 as gen_uuid
 from django.db import models
 from django.contrib.auth.models import User, Group
 
@@ -15,10 +16,15 @@ class UpperCaseCharField(models.CharField):
         else:
             return super(UpperCaseCharField, self).pre_save(model_instance, add)
 
-# Create your models here.
 class Host(models.Model):
     id = models.AutoField(primary_key=True)
     hostname = UpperCaseCharField(max_length=255)
+    key = models.CharField(max_length=100)
+    
+    def __init__(self, *args, **kwargs):
+        super(Host, self).__init__(*args, **kwargs)
+        self.key = str(gen_uuid()) if self.key in [None, '', False] else self.key
+    
     def __str__(self):
         return self.hostname
 

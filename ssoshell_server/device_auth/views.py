@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
+from django.contrib.auth.models import Group as UserGroup
 from django.core import serializers as serial
 from django.conf import settings
 from ssoshell_server.oidc_authentication import views as oidc_views
 from ssoshell_server.device_auth.models import AuthRequest, AuthCompleted
 from ssoshell_server.ssh_ca.actions import sign_key
+from ssoshell_server.host.models import UserHostPermission, UserHostgroupPermission
 import json, random, string
 
 # Create your views here.
@@ -72,9 +74,28 @@ def retn(request):
         subject = request.session.get('openid', {}).get(settings.SSH_CA_CERT_SUBJECT_OIDC)
     if (request.session.get('method') == 'saml'):
         subject = request.session.get('saml', {}).get(settings.SSH_CA_CERT_SUBJECT_SAML)
-     
-    # principals = ",".join(x.name for x in request.user.groups.all() if " " not in x.name)
-    principals = "none,nobody"
+    
+    principals = [subject]
+    
+    # Get user direct server principals
+    host_principals = UserHostPermission.objects.filter(user=request.user.id)
+    
+    # Get user group principals
+    ugr_principals = UserGroup.objects.filter(user=request.user)
+    
+    # Get user hostgroup principals
+    hgr_principals = UserHostgroupPermission.objects.filter(user=request.user.id)
+    
+    for item in host_principals:
+        principals.append(item.host.hostname)
+        
+    for item in ugr_principals: 
+        principals.append(f'ugr-{item.name}'.replace(' ', '-'))
+    
+    for item in hgr_principals:
+        principals.append(f'hgr-{item.hostgroup.group_slug}')
+    
+    principals = ','.join(principals)
     
     # try:
     auth_completed = AuthCompleted(
@@ -104,7 +125,5 @@ def callback(request, token):
         auth_object = AuthCompleted.objects.get(token=token)
     except AuthCompleted.DoesNotExist as e:
         return HttpResponseBadRequest(content=e)    
-    
-    
-    
-    return HttpResponse(status=200, content_type='application/json', content=auth_object.signed_key)
+        
+    return HttpResponse(status=200, content_type='text/plain', content=auth_object.signed_key)

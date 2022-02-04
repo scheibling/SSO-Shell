@@ -25,23 +25,31 @@ LOGIN_REDIRECT_URL = '/success'
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+# X_FORWARDED_PROTO read for rProxy support
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qo445$#w+(dz&1ynacytdc1w&42xo#06yg)+-n!+am(p^43*22'
+SECRET_KEY = env('SECRET_KEY', default='i_am_an_insecure_key_please_change_me_as_soon_as_possible')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+BASE_URL = env('BASE_URL', default='http://localhost:8000')
 ALLOWED_HOSTS = env('APP_HOSTNAME', default=['*'])
+
+
 # CSRF_TRUSTED_ORIGINS = "https://ca.ssosh.io"
 CSRF_TRUSTED_ORIGINS = ['https://ca.ssosh.io']
 AUTH_SERVER = env('OIDC_AUTH_SERVER')
 AUTH_CLIENT_ID = env('OIDC_AUTH_CLIENT_ID')
 AUTH_CLIENT_SECRET = env('OIDC_AUTH_CLIENT_SECRET')
 AUTH_SCOPE = env('OIDC_AUTH_SCOPE', default="openid").split(",")
+
+SSH_HOST_CONFIGURATION_SECRET = env('CONFIGURATION_SERCRET', default='default-secret')
 
 SSH_CA_CERT_PATH = env('SSH_CA_CERT_PATH', default='ssh_ca')
 SSH_CA_CERT_PASSWORD = env('SSH_CA_CERT_PASSWORD', default='')
@@ -82,7 +90,9 @@ ROOT_URLCONF = 'ssoshell_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                os.path.join(BASE_DIR, 'ssoshell_server', 'user', 'templates')
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

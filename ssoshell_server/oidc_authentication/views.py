@@ -12,6 +12,7 @@ except ImportError:
 from django.utils.http import url_has_allowed_host_and_scheme as is_safe_url
 
 from .auth import get_server
+from openid_connect import connect
 
 try:
 	LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
@@ -26,7 +27,7 @@ except AttributeError:
 try:
 	AUTH_SCOPE = settings.AUTH_SCOPE
 except AttributeError:
-	AUTH_SCOPE = ('openid',)
+	AUTH_SCOPE = ('openid','WS')
 
 try:
 	GET_USER_FUNCTION = settings.AUTH_GET_USER_FUNCTION
@@ -37,7 +38,6 @@ try:
 	ALLOWED_REDIRECTION_HOSTS = [host for host in os.getenv('ALLOWED_REDIRECTION_HOSTS', '').split(',') if host] or settings.ALLOWED_REDIRECTION_HOSTS
 except AttributeError:
 	ALLOWED_REDIRECTION_HOSTS = []
-
 
 def _import_object(path, def_name):
 	try:
@@ -50,6 +50,9 @@ def _import_object(path, def_name):
 
 get_user = _import_object(GET_USER_FUNCTION, 'get_user')
 
+
+def login_admin(request):
+    return login(request, '/admin/')
 
 def login(request, return_path = None):
 	if return_path is None:
@@ -94,8 +97,29 @@ def callback(request):
 	if not user or not user.is_authenticated:
 		return login_again(request, return_path)
 
+	userinfo = get_server().get_userinfo(access_token=res.access_token)
+
 	del request.session['login_attempt']
 	auth.login(request, user)
+
+	current_user = auth.get_user(request)
+
+	if userinfo.get('email', False):
+		current_user.email = userinfo['email']
+  
+	if userinfo.get('displayname', False):
+		splt = userinfo['displayname'].split(' ')
+		current_user.first_name = " ".join(splt[:-1])
+		current_user.last_name = " ".join(splt[-1:])
+
+	if userinfo.get('given_name', False):
+		current_user.first_name = userinfo['given_name']
+
+	if userinfo.get('surname', False):
+		current_user.last_name = userinfo['surname']
+  
+	current_user.save()
+	
 	request.session['openid_token'] = res.id_token
 	request.session['openid'] = res.id
 
@@ -121,3 +145,8 @@ def logout(request):
 		))
 	else:
 		return redirect(request.build_absolute_uri(LOGOUT_REDIRECT_URL))
+
+def test(request):
+    # serv = connect(settings.AUTH_SERVER, settings.AUTH_CLIENT_ID, settings.AUTH_CLIENT_SECRET)
+    # serv.get_userinfo(access_token=request.session.get('openid_token'))
+    print(request.session.get('openid_token', ''))

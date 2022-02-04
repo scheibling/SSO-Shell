@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 
+admin.autodiscover()
+admin.site.login_template = 'admin/login_custom.html'
 
 urlpatterns = [
     re_path('^', include('ssoshell_server.user.urls')),

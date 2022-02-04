@@ -26,8 +26,10 @@ class HostsAdmin(admin.ModelAdmin):
     
     fieldsets = [
         ("Enter the hostname for the server", {'fields': ['hostname']}),
+        ("The hostkey for the server: ", {'fields': ['key']})
     ]
     list_display = ['hostname']
+    readonly_fields = ('key',)
     inlines = [HostGroupAssignmentInline, UserHostPermissionAdmin, GroupHostPermissionAdmin]
 
 class HostGroupsAdmin(admin.ModelAdmin):

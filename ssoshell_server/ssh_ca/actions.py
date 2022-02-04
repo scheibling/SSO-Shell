@@ -33,7 +33,7 @@ def sign_key(key_data, user_id, principals, serial):
         return False
         
     with open(os.path.join('/tmp', 'id_ecdsa%s-cert.pub' % serial), 'r') as f:
-        cert = f.readline()
+        cert = f.read()
     os.remove(os.path.join('/tmp', 'id_ecdsa%s-cert.pub' % serial))
     os.remove(os.path.join('/tmp', 'id_ecdsa%s.pub' % serial))
     
