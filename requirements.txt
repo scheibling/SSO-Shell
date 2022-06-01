@@ -1,7 +1,7 @@
 https://github.com/mitsuhiko/flask-oauth/archive/refs/heads/master.zip
 Django
 requests
-asyncssh
+sshkey-tools
 openid-connect
 django_auth_oidc
 django-environ

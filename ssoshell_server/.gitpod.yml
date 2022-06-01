@@ -1,0 +1,18 @@
+image: gitpod/workspace-python-3.9
+tasks:
+  - init: |
+      sudo apt-get update && sudo apt-get -y upgrade && sudo apt -y install openssh-server
+  - command: |
+      pip3 install -r requirements.txt
+  - name: Server
+    command: |
+      python manage.py runserver 0.0.0.0:8080
+
+vscode:
+  extensions:
+    - ms-python.python
+    - KevinRose.vsc-python-indent
+    - samuelcolvin.jinjahtml
+    - njpwerner.autodocstring
+    - littlefoxteam.vscode-python-test-adapter
+    - https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/copilot/1.24.6022/vspackage
