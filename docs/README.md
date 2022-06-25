@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/sso-shell-light.svg#gh-dark-mode-only" />
+  <img src="docs/sso-shell-no-text-light.svg#gh-dark-mode-only" />
 </p>
 <p align="center">
-  <img src="docs/sso-shell-dark.svg#gh-light-mode-only" />
+  <img src="docs/sso-shell-no-text-dark.svg#gh-light-mode-only" />
 </p>
 
 # SSO Shell
