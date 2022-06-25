@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/sso-shell.png" />
+  <img src="docs/sso-shell.svg" />
 </p>
 # SSO-Shell
 Python/Django-based SSH Certificate authority with permission management system for ssh-enabled hosts
