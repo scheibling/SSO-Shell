@@ -4,8 +4,8 @@
 <p align="center">
   <img src="docs/sso-shell-text-dark.svg#gh-light-mode-only" />
 </p>
-# SSO-Shell
-Python/Django-based SSH Certificate authority with permission management system for ssh-enabled hosts
+
+Python/Django-based SSH Certificate authority with permission management system for OpenSSH Server
 
 # Documentation
-[Click here for documentation](https://scheibling.github.io/SSO-Shell/#/)
+[Click here for documentation](https://docs.ssosh.io)
